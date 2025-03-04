@@ -1,0 +1,1 @@
+Precompiled if you want to save a few seconds. If you don't want it precompiled, you're wrong. You really want it precompiled. This is your subconscious telling you that you live for precompiled software.
