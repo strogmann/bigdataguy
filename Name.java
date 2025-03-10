@@ -1,14 +1,13 @@
-public class Name {
-
-    private String firstName;
-    private String lastName;
+public class Name implements Comparable<Name> {
+    private final String firstName;
+    private final String lastName;
 
     public Name(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
     }
 
-    public String fullname() {
+    public String fullName() {
         return lastName + ", " + firstName;
     }
 
@@ -33,8 +32,18 @@ public class Name {
         }
     }
 
+    @Override
+    public int compareTo(Name other) {
+        int lastNameComparison = this.lastName.compareToIgnoreCase(other.lastName);
+        if (lastNameComparison != 0) {
+            return lastNameComparison;
+        }
+        return this.firstName.compareToIgnoreCase(other.firstName);
+    }
+
+    @Override
     public String toString() {
-        return fullname();
+        return fullName();
     }
 
     public static void doUnitTests() {

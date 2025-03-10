@@ -2,29 +2,19 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class PatientIdentity {
-
-    private Name name;
-    private Date dateOfBirth;
-
-    public PatientIdentity(Name name, Date dateOfBirth) {
-        this.name = name;
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    public Name getName() {
-        return name;
-    }
-
-    public Date getDateOfBirth() {
-        return dateOfBirth;
-    }
+public record PatientIdentity(Name name, Date dateOfBirth) implements Comparable<PatientIdentity> {
 
     public boolean match(PatientIdentity other) {
-        return (
-            this.name.match(other.name) &&
-            this.dateOfBirth.equals(other.dateOfBirth)
-        );
+        return this.name.match(other.name) && this.dateOfBirth.equals(other.dateOfBirth);
+    }
+
+    @Override
+    public int compareTo(PatientIdentity other) {
+        int nameComparison = this.name.compareTo(other.name);
+        if (nameComparison != 0) {
+            return nameComparison;
+        }
+        return this.dateOfBirth.compareTo(other.dateOfBirth);
     }
 
     public boolean isLessThan(PatientIdentity other) {
@@ -37,6 +27,7 @@ public class PatientIdentity {
         }
     }
 
+    @Override
     public String toString() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         return "name: " + name.toString() + " dob: " + sdf.format(dateOfBirth);

@@ -2,17 +2,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Patient {
-
-    private PatientIdentity patientIdentity;
-
-    public Patient(PatientIdentity patientIdentity) {
-        this.patientIdentity = patientIdentity;
-    }
-
-    public PatientIdentity getPatientIdentity() {
-        return patientIdentity;
-    }
+public record Patient(PatientIdentity patientIdentity) {
 
     public String toString() {
         return "identity: " + patientIdentity.toString();
@@ -28,7 +18,7 @@ public class Patient {
         PatientIdentity pi = new PatientIdentity(name, dob);
         Patient patient = new Patient(pi);
 
-        if (!patient.getPatientIdentity().match(pi)) {
+        if (!patient.patientIdentity().match(pi)) {
             System.out.println("FAIL: Patient getPatientIdentity failed");
             failCount++;
         }
