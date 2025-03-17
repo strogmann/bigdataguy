@@ -1,3 +1,8 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -5,6 +10,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class PatientList implements Iterable<Patient> {
+
     private final Patient[] patients;
     private int size;
 
@@ -42,7 +48,8 @@ public class PatientList implements Iterable<Patient> {
         int high = size - 1;
         while (low <= high) {
             int mid = (low + high) / 2;
-            int comparison = patients[mid].patientIdentity().compareTo(identity);
+            int comparison =
+                patients[mid].patientIdentity().compareTo(identity);
             if (comparison < 0) {
                 low = mid + 1;
             } else {
@@ -57,7 +64,8 @@ public class PatientList implements Iterable<Patient> {
         int high = size - 1;
         while (low <= high) {
             int mid = (low + high) / 2;
-            int comparison = patients[mid].patientIdentity().compareTo(identity);
+            int comparison =
+                patients[mid].patientIdentity().compareTo(identity);
             if (comparison == 0) {
                 return patients[mid];
             } else if (comparison < 0) {
@@ -76,6 +84,42 @@ public class PatientList implements Iterable<Patient> {
             }
         }
         return null;
+    }
+
+    public boolean saveToFile(String filename) {
+        try (
+            BufferedWriter writer = new BufferedWriter(new FileWriter(filename))
+        ) {
+            for (Patient patient : this) {
+                writer.write(patient.toCSV());
+                writer.newLine(); // Append newline after each patient
+            }
+            return true; // Success
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false; // Error occurred
+        }
+    }
+
+    public boolean importFromFile(String filename) {
+        try (
+            BufferedReader reader = new BufferedReader(new FileReader(filename))
+        ) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                try {
+                    Patient patient = Patient.fromCSV(line); // Create Patient from CSV
+                    add(patient); // Add the patient to the list
+                } catch (IllegalArgumentException e) {
+                    // Skip invalid CSV lines
+                    System.out.println("Skipping invalid line: " + line);
+                }
+            }
+            return true; // Success
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false; // Error occurred
+        }
     }
 
     @Override
@@ -128,14 +172,20 @@ public class PatientList implements Iterable<Patient> {
             testCount++;
 
             Patient foundPatient = patientList.find(pi1);
-            if (foundPatient == null || !foundPatient.patientIdentity().match(pi1)) {
+            if (
+                foundPatient == null ||
+                !foundPatient.patientIdentity().match(pi1)
+            ) {
                 System.out.println("FAIL: Finding patient1 failed");
                 failCount++;
             }
             testCount++;
 
             foundPatient = patientList.find(pi2);
-            if (foundPatient == null || !foundPatient.patientIdentity().match(pi2)) {
+            if (
+                foundPatient == null ||
+                !foundPatient.patientIdentity().match(pi2)
+            ) {
                 System.out.println("FAIL: Finding patient2 failed");
                 failCount++;
             }
@@ -147,12 +197,18 @@ public class PatientList implements Iterable<Patient> {
             }
             String expectedOrder = patient1 + "\n" + patient2 + "\n";
             if (!iteratorResults.toString().equals(expectedOrder)) {
-                System.out.println("FAIL: Iterator did not return patients in expected order");
+                System.out.println(
+                    "FAIL: Iterator did not return patients in expected order"
+                );
                 failCount++;
             }
             testCount++;
 
-            System.out.printf("%d tests run, %d failed\n", testCount, failCount);
+            System.out.printf(
+                "%d tests run, %d failed\n",
+                testCount,
+                failCount
+            );
         } catch (ParseException e) {
             System.out.println("Date parsing failed: " + e.getMessage());
         }
