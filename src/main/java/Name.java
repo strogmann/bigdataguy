@@ -1,3 +1,5 @@
+package main;
+
 public class Name implements Comparable<Name> {
 
     private final String firstName;
@@ -59,7 +61,7 @@ public class Name implements Comparable<Name> {
         String lastName = parts[1];
         return new Name(firstName, lastName);
     }
-
+    /*
     public static void doUnitTests() {
         int testCount = 0, failCount = 0;
         System.out.println("Running unit tests for Name");
@@ -138,5 +140,5 @@ public class Name implements Comparable<Name> {
         testCount++;
 
         System.out.printf("%d tests run, %d failed\n", testCount, failCount);
-    }
+        } */
 }

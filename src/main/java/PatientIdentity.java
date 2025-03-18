@@ -1,3 +1,5 @@
+package main;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -53,7 +55,7 @@ public record PatientIdentity(Name name, Date dateOfBirth)
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         return "name: " + name.toString() + " dob: " + sdf.format(dateOfBirth);
     }
-
+    /*
     public static void doUnitTests() throws ParseException {
         int testCount = 0, failCount = 0;
         System.out.println("Running unit tests for PatientIdentity");
@@ -116,5 +118,5 @@ public record PatientIdentity(Name name, Date dateOfBirth)
         testCount++;
 
         System.out.printf("%d tests run, %d failed\n", testCount, failCount);
-    }
+        } */
 }

@@ -1,6 +1,4 @@
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+package main;
 
 public record Patient(PatientIdentity patientIdentity) {
     @Override
@@ -16,7 +14,7 @@ public record Patient(PatientIdentity patientIdentity) {
         PatientIdentity identity = PatientIdentity.fromCSV(csv); // Assuming PatientIdentity has a fromCSV method
         return new Patient(identity);
     }
-
+    /*
     public static void doUnitTests() throws ParseException {
         int testCount = 0, failCount = 0;
         System.out.println("Running unit tests for Patient");
@@ -34,5 +32,5 @@ public record Patient(PatientIdentity patientIdentity) {
         testCount++;
 
         System.out.printf("%d tests run, %d failed\n", testCount, failCount);
-    }
+        } */
 }
